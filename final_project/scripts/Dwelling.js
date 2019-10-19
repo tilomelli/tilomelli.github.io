@@ -1,8 +1,7 @@
- 
-function mkBalcony(depth, width, heigth, grndTextureImgFile, repeat_X, repeat_Y) {
+function mkBalcony(depth, width, height, grndTextureImgFile, repeat_X, repeat_Y) {
 	var balcony = new THREE.Object3D();
 	var ground = mkBalconyGround(depth, width, grndTextureImgFile, repeat_X, repeat_Y);
-	var railing = mkBalconyRailing(depth, width, heigth);
+	var railing = mkBalconyRailing(depth, width, height);
 
 	balcony.add(ground);
 	balcony.add(railing);
@@ -11,57 +10,57 @@ function mkBalcony(depth, width, heigth, grndTextureImgFile, repeat_X, repeat_Y)
 }
 
 
-function mkBalconyRailing(depth, width, heigth) {
+function mkBalconyRailing(depth, width, height) {
 	var balconyRailing = new THREE.Object3D();
 	var railingMaterial = new THREE.MeshPhongMaterial({color: "#8F2400", metal: true, shininess: 100});
 
 	var zOffset = 0.1+0.05/16;
 	var railingFactor = 0.15/3;
 	var railingDepth = railingWidth = depth * railingFactor;
-	var railingHeigth = railingWidth/5;
+	var railingHeight = railingWidth/5;
 
 
 	var shape = [
 		[0, railingWidth], [depth-railingDepth, railingWidth], [depth-railingDepth, width-railingWidth], [0, width-railingWidth], 
 		[0, width-2*railingWidth], [depth-2*railingDepth, width-2*railingWidth], [depth-2*railingDepth, 2*railingWidth], [0, 2*railingWidth],
 		[0, railingWidth]];
-	var bottom = new THREE.Mesh(new THREE.ExtrudeGeometry(mkShape(shape), {amount: railingHeigth, bevelEnabled: false}), railingMaterial);
-	var top = new THREE.Mesh(new THREE.ExtrudeGeometry(mkShape(shape), {amount: railingHeigth, bevelEnabled: false}), railingMaterial);
+	var bottom = new THREE.Mesh(new THREE.ExtrudeGeometry(mkShape(shape), {amount: railingHeight, bevelEnabled: false}), railingMaterial);
+	var top = new THREE.Mesh(new THREE.ExtrudeGeometry(mkShape(shape), {amount: railingHeight, bevelEnabled: false}), railingMaterial);
 	bottom.position.set(-depth/2, -width/2, zOffset+railingWidth);
-	top.position.set(-depth/2, -width/2, zOffset+railingWidth+railingHeigth+heigth);
+	top.position.set(-depth/2, -width/2, zOffset+railingWidth+railingHeight+height);
 
 
-	var mainPole1 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeigth+zOffset+heigth), railingMaterial);
-	mainPole1.position.set(-depth/2+railingDepth*3/2, -width/2+railingWidth*3/2, zOffset/2+railingWidth+heigth/2+railingHeigth);
-	var mainPole2 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeigth+zOffset+heigth), railingMaterial);
-	mainPole2.position.set(depth/2-railingDepth*3/2, -width/2+railingWidth*3/2, zOffset/2+railingWidth+heigth/2+railingHeigth);
-	var mainPole3 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeigth+zOffset+heigth), railingMaterial);
-	mainPole3.position.set(-depth/2+railingDepth*3/2, width/2-railingWidth*3/2, zOffset/2+railingWidth+heigth/2+railingHeigth);
-	var mainPole4 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeigth+zOffset+heigth), railingMaterial);
-	mainPole4.position.set(depth/2-railingDepth*3/2, width/2-railingWidth*3/2, zOffset/2+railingWidth+heigth/2+railingHeigth);
-	var mainPole5 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeigth+zOffset+heigth), railingMaterial);
-	mainPole5.position.set(depth/2-railingDepth*3/2, 0, zOffset/2+railingWidth+heigth/2+railingHeigth);
+	var mainPole1 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeight+zOffset+height), railingMaterial);
+	mainPole1.position.set(-depth/2+railingDepth*3/2, -width/2+railingWidth*3/2, zOffset/2+railingWidth+height/2+railingHeight);
+	var mainPole2 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeight+zOffset+height), railingMaterial);
+	mainPole2.position.set(depth/2-railingDepth*3/2, -width/2+railingWidth*3/2, zOffset/2+railingWidth+height/2+railingHeight);
+	var mainPole3 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeight+zOffset+height), railingMaterial);
+	mainPole3.position.set(-depth/2+railingDepth*3/2, width/2-railingWidth*3/2, zOffset/2+railingWidth+height/2+railingHeight);
+	var mainPole4 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeight+zOffset+height), railingMaterial);
+	mainPole4.position.set(depth/2-railingDepth*3/2, width/2-railingWidth*3/2, zOffset/2+railingWidth+height/2+railingHeight);
+	var mainPole5 = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*3/5, railingWidth*3/5, railingHeight+zOffset+height), railingMaterial);
+	mainPole5.position.set(depth/2-railingDepth*3/2, 0, zOffset/2+railingWidth+height/2+railingHeight);
 
 
 	var minipole;
 	for(var i = 2; i < (depth-railingDepth*2)/(railingDepth*3/2); i++) {
-		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, heigth), railingMaterial);
-		minipole.position.set(-depth/2+railingDepth*3/2*i, -width/2+railingWidth*3/2, zOffset+railingWidth+heigth/2+railingHeigth);
+		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, height), railingMaterial);
+		minipole.position.set(-depth/2+railingDepth*3/2*i, -width/2+railingWidth*3/2, zOffset+railingWidth+height/2+railingHeight);
 		balconyRailing.add(minipole);
 	}
 	for(var i = 2; i < (depth-railingDepth*2)/(railingDepth*3/2); i++) {
-		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, heigth), railingMaterial);
-		minipole.position.set(-depth/2+railingDepth*3/2*i, width/2-railingWidth*3/2, zOffset+railingWidth+heigth/2+railingHeigth);
+		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, height), railingMaterial);
+		minipole.position.set(-depth/2+railingDepth*3/2*i, width/2-railingWidth*3/2, zOffset+railingWidth+height/2+railingHeight);
 		balconyRailing.add(minipole);
 	}
 	for(var i = 2; i < (width-railingDepth*2)/(railingDepth*3); i++) {
-		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, heigth), railingMaterial);
-		minipole.position.set(depth/2-railingDepth*3/2, -width/2+railingWidth*3/2*i, zOffset+railingWidth+heigth/2+railingHeigth);
+		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, height), railingMaterial);
+		minipole.position.set(depth/2-railingDepth*3/2, -width/2+railingWidth*3/2*i, zOffset+railingWidth+height/2+railingHeight);
 		balconyRailing.add(minipole);
 	}
 	for(var i = 1; i < (width-railingDepth*2)/(railingDepth*3); i++) {
-		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, heigth), railingMaterial);
-		minipole.position.set(depth/2-railingDepth*3/2, railingWidth*3/2*i, zOffset+railingWidth+heigth/2+railingHeigth);
+		minipole = new THREE.Mesh(new THREE.BoxGeometry(railingDepth*2/5, railingWidth*2/5, height), railingMaterial);
+		minipole.position.set(depth/2-railingDepth*3/2, railingWidth*3/2*i, zOffset+railingWidth+height/2+railingHeight);
 		balconyRailing.add(minipole);
 	}
 
@@ -81,11 +80,11 @@ function mkBalconyRailing(depth, width, heigth) {
 function mkBalconyGround(depth, width, grndTextureImgFile, repeat_X, repeat_Y) {
 	var balconyGround = new THREE.Object3D();
 
-	var heigth = 0.1;
-	var baseGeometry = new THREE.BoxGeometry(depth, width, heigth);
+	var height = 0.1;
+	var baseGeometry = new THREE.BoxGeometry(depth, width, height);
 	var baseMaterial = new THREE.MeshLambertMaterial({color: 0xEEEEEE, shading: THREE.FlatShading, side: THREE.DoubleSide});
 	var base = new THREE.Mesh(baseGeometry, baseMaterial);
-	base.position.z = heigth/2;
+	base.position.z = height/2;
 
 	var boundaryFactor = 0.15;
 	var boundWidth = boundDepth = depth * boundaryFactor;
@@ -95,8 +94,8 @@ function mkBalconyGround(depth, width, grndTextureImgFile, repeat_X, repeat_Y) {
 	var boundary = mkTexturedShape('marmo.jpg', 1, 1, [
 		[0, boundWidth], [0, 0], [depth, 0], [depth, width], [0, width],
 		[0, width-boundWidth], [depth-boundDepth, width-boundWidth], [depth-boundDepth, boundWidth], [0, boundWidth]]);
-	ground.position.set(-depth/2, -width/2, heigth+0.05/16);
-	boundary.position.set(-depth/2, -width/2, heigth+0.05/16);
+	ground.position.set(-depth/2, -width/2, height+0.05/16);
+	boundary.position.set(-depth/2, -width/2, height+0.05/16);
 
 	balconyGround.add(base);
 	balconyGround.add(ground);
@@ -122,7 +121,7 @@ function mkBalconies() {
 }
 
 
-function mkCeiling(ceilingDepth, ceilingWidth, heigth) {
+function mkCeiling(ceilingDepth, ceilingWidth, height) {
 	var ceilingGeometry = new THREE.PlaneGeometry(ceilingDepth, ceilingWidth, 100, 100);
 	var ceilingMaterial = new THREE.MeshLambertMaterial({
 		color: "#FFFEE6", 
@@ -130,7 +129,7 @@ function mkCeiling(ceilingDepth, ceilingWidth, heigth) {
 		side: THREE.BackSide});
 
 	var ceiling = new THREE.Mesh(ceilingGeometry, ceilingMaterial);
-	ceiling.position.set(ceilingDepth/2, ceilingWidth/2, heigth);
+	ceiling.position.set(ceilingDepth/2, ceilingWidth/2, height);
 	return ceiling;
 }
 
